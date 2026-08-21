@@ -140,6 +140,11 @@ edits. A live project lease or unsafe registered path stops the operation before
 project or PATH mutation and reports every registered project path. Duplicate
 registry entries for the same canonical project are handled once.
 
+On Windows, the BYO application-data root is removed before the command
+returns. Windows Defender or another scanner can briefly keep the renamed,
+just-exited launcher open; BYO retries that final file deletion in the
+background for up to about two minutes.
+
 | Operation | Removes | Preserves |
 |---|---|---|
 | `byo uninstall` | Current project's BYO integration | Shared runtime and retained project working data |
