@@ -3,7 +3,7 @@
 Public download home for the **BYO installer**: the native Rust `byo` launcher,
 compiled firmware MCP sidecar, and workflow pack for Codex and Claude.
 
-The current public build is the unsigned [v0.1.9 preview](https://github.com/buh07/BYO-Releases/releases/tag/v0.1.9).
+The current public build is the unsigned [v0.1.10 preview](https://github.com/buh07/BYO-Releases/releases/tag/v0.1.10).
 It supports macOS 12+ on Apple silicon and Intel, Windows 10 22H2/11 x86-64,
 and Linux x86-64 with glibc 2.28+.
 
@@ -17,25 +17,25 @@ and administrator access are not required. Keep `--allow-unsigned` /
 ### macOS - Apple silicon
 
 ```sh
-(set -e; installer=$(curl -fsSL https://github.com/buh07/BYO-Releases/releases/download/v0.1.9/install.sh); printf '%s\n' "$installer" | sh -s -- --version 0.1.9 --base-url https://github.com/buh07/BYO-Releases/releases/download/v0.1.9 --sha256 d3218a331e957e8a88b18b7844ab9c123985029c2fc27bb6035f448d25361afd --allow-unsigned)
+(set -e; installer=$(curl -fsSL https://github.com/buh07/BYO-Releases/releases/download/v0.1.10/install.sh); printf '%s\n' "$installer" | sh -s -- --version 0.1.10 --base-url https://github.com/buh07/BYO-Releases/releases/download/v0.1.10 --sha256 73b36be293ac2913fab11ee4ac8cae593b9a8ffab1ee3480730094903fe7afcd --allow-unsigned)
 ```
 
 ### macOS - Intel
 
 ```sh
-(set -e; installer=$(curl -fsSL https://github.com/buh07/BYO-Releases/releases/download/v0.1.9/install.sh); printf '%s\n' "$installer" | sh -s -- --version 0.1.9 --base-url https://github.com/buh07/BYO-Releases/releases/download/v0.1.9 --sha256 4157cfd19958fe92097ec26ddcbf90225ffeca026250964a6f5d3b8c42cd9ef4 --allow-unsigned)
+(set -e; installer=$(curl -fsSL https://github.com/buh07/BYO-Releases/releases/download/v0.1.10/install.sh); printf '%s\n' "$installer" | sh -s -- --version 0.1.10 --base-url https://github.com/buh07/BYO-Releases/releases/download/v0.1.10 --sha256 9fd91020b2413a4c1addf1f17363affb10cbd329b0b1440f7770bf59c1469441 --allow-unsigned)
 ```
 
 ### Windows - x86-64 (PowerShell)
 
 ```powershell
-& ([scriptblock]::Create((New-Object System.Net.WebClient).DownloadString('https://github.com/buh07/BYO-Releases/releases/download/v0.1.9/install.ps1'))) -Version 0.1.9 -BaseUrl 'https://github.com/buh07/BYO-Releases/releases/download/v0.1.9' -Sha256 f5a0862748b1c6985e08bc6c2855ef94c998bb73ceb8c1d1390ded3581f1af18 -AllowUnsigned
+& ([scriptblock]::Create((New-Object System.Net.WebClient).DownloadString('https://github.com/buh07/BYO-Releases/releases/download/v0.1.10/install.ps1'))) -Version 0.1.10 -BaseUrl 'https://github.com/buh07/BYO-Releases/releases/download/v0.1.10' -Sha256 72e05d48e9632d08249bfa6fddc3f2a0713015234fac5214abc1ca0fb274013d -AllowUnsigned
 ```
 
 ### Linux - x86-64, glibc 2.28+
 
 ```sh
-(set -e; installer=$(curl -fsSL https://github.com/buh07/BYO-Releases/releases/download/v0.1.9/install.sh); printf '%s\n' "$installer" | sh -s -- --version 0.1.9 --base-url https://github.com/buh07/BYO-Releases/releases/download/v0.1.9 --sha256 5c0a80ecc78dd412871b057782cd80dce502cc15a354b175fc443df69df23103 --allow-unsigned)
+(set -e; installer=$(curl -fsSL https://github.com/buh07/BYO-Releases/releases/download/v0.1.10/install.sh); printf '%s\n' "$installer" | sh -s -- --version 0.1.10 --base-url https://github.com/buh07/BYO-Releases/releases/download/v0.1.10 --sha256 ca03c9b0ed814b37df1e9babdd890f71a46773ff701a03df00eb61960029d67b --allow-unsigned)
 ```
 
 Installation adds BYO to `PATH`. On macOS/Linux, open a new terminal afterward.
@@ -43,17 +43,11 @@ The inline Windows command makes `byo` available in the current PowerShell
 session; restart other terminal apps that were already open.
 
 These bundles are unsigned and not notarized. Signed automatic updates are not
-available. The [release assets](https://github.com/buh07/BYO-Releases/releases/tag/v0.1.9)
+available. The [release assets](https://github.com/buh07/BYO-Releases/releases/tag/v0.1.10)
 also include native archives, separate `.sha256` receipts and installer scripts
 for manual/offline installation. Use `sh ./install.sh --bundle ./ARCHIVE` on
-macOS/Linux or `powershell -NoProfile -ExecutionPolicy Bypass -File ./install.ps1 -Bundle ./ARCHIVE.zip`
-on Windows after checking the archive's SHA-256.
-
-Known limitation in 0.1.9: `byo doctor --global` and the analysis section of
-`byo status` report analysis unavailable because the launcher expects a different
-inventory classification for clangd resource headers. The bundled Cppcheck and
-clangd passed native core checks on all four platforms. This installer diagnostic
-bug remains unfixed in this preview.
+macOS/Linux or `powershell -NoProfile -ExecutionPolicy Bypass -File ./install.ps1
+-Bundle ./ARCHIVE.zip` on Windows after checking the archive's SHA-256.
 
 ## Initialize BYO in a project
 

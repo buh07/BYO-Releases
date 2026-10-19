@@ -6,7 +6,7 @@ on:
       tag:
         description: Published preview tag to verify
         required: true
-        default: v0.1.9
+        default: v0.1.10
         type: string
 
 permissions:

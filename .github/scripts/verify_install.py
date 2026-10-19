@@ -18,7 +18,14 @@ LABELS = {
 }
 EVIDENCE = Path("install-evidence")
 EVIDENCE.mkdir()
-RESULT = {"tag": TAG, "target": TARGET, "steps": [], "errors": []}
+RESULT = {
+    "tag": TAG,
+    "target": TARGET,
+    "steps": [],
+    "errors": [],
+    "doctor_analysis_ready": False,
+    "status_analysis_ready": False,
+}
 LAUNCHER = (
     Path(os.environ["LOCALAPPDATA"]) / "BYO/bin/byo.exe"
     if os.name == "nt"
@@ -75,10 +82,36 @@ def main():
             else ["sh", "-c", command]
         )
         run("one-line-install", args)
-        version = run("version", [str(LAUNCHER), "--version"])
-        assert version.strip().endswith(index["version"]), version
-        run("global-doctor", [str(LAUNCHER), "doctor", "--global"])
-        run("global-doctor-json", [str(LAUNCHER), "doctor", "--global", "--json"])
+        checks = [
+            ("version", [str(LAUNCHER), "--version"]),
+            ("global-doctor", [str(LAUNCHER), "doctor", "--global"]),
+            ("global-doctor-json", [str(LAUNCHER), "doctor", "--global", "--json"]),
+            ("status", [str(LAUNCHER), "status"]),
+        ]
+        # Capture the whole independent post-install batch before reporting errors.
+        for name, arguments in checks:
+            try:
+                output = run(name, arguments)
+                if name == "version":
+                    assert output.strip().endswith(index["version"]), output
+                elif name == "global-doctor-json":
+                    doctor = json.loads(output)
+                    by_id = {item["id"]: item for item in doctor["checks"]}
+                    for check_id in (
+                        "runtime.manifest.integrity",
+                        "runtime.sidecar.self-test",
+                        "runtime.analysis.cppcheck",
+                        "runtime.analysis.clangd",
+                    ):
+                        assert by_id.get(check_id, {}).get("status") == "passed", doctor
+                    RESULT["doctor_analysis_ready"] = True
+                elif name == "status":
+                    status = json.loads(output)
+                    assert status["runtime_version"] == index["version"], status
+                    assert status["analysis"]["status"] == "ready", status
+                    RESULT["status_analysis_ready"] = True
+            except Exception as error:
+                RESULT["errors"].append(f"{name}: {type(error).__name__}: {error}")
     except Exception as error:
         RESULT["errors"].append(f"{type(error).__name__}: {error}")
     finally:
