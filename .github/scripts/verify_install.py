@@ -78,6 +78,7 @@ def main():
         version = run("version", [str(LAUNCHER), "--version"])
         assert version.strip().endswith(index["version"]), version
         run("global-doctor", [str(LAUNCHER), "doctor", "--global"])
+        run("global-doctor-json", [str(LAUNCHER), "doctor", "--global", "--json"])
     except Exception as error:
         RESULT["errors"].append(f"{type(error).__name__}: {error}")
     finally:
