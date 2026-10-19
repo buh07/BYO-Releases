@@ -49,6 +49,12 @@ for manual/offline installation. Use `sh ./install.sh --bundle ./ARCHIVE` on
 macOS/Linux or `powershell -NoProfile -ExecutionPolicy Bypass -File ./install.ps1 -Bundle ./ARCHIVE.zip`
 on Windows after checking the archive's SHA-256.
 
+Known limitation in 0.1.9: `byo doctor --global` and the analysis section of
+`byo status` report analysis unavailable because the launcher expects a different
+inventory classification for clangd resource headers. The bundled Cppcheck and
+clangd passed native core checks on all four platforms. This installer diagnostic
+bug remains unfixed in this preview.
+
 ## Initialize BYO in a project
 
 The runtime is installed once per computer. Initialize every firmware project
